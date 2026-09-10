@@ -1,0 +1,4 @@
+# Package versions used for EP2 and checked with these examples.
+pydantic==2.13.4
+agent-framework-core==1.15.0
+agent-framework-ollama==1.0.0b260813

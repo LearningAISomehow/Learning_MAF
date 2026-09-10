@@ -1,0 +1,21 @@
+Captured from a real local qwen2:7b call on 10 September 2026.
+This is one observed run; model responses can vary.
+
+Command: python 02_llm_structured_output.py
+
+Input: I like gardening.
+Calling local model: qwen2:7b
+
+JSON text from the LLM:
+{
+  "memory_type": "preference",
+  "memory_key": "likes",
+  "memory_value": "gardening"
+}
+
+Python object: MemoryDecision
+memory_type: preference
+memory_key: likes
+memory_value: gardening
+As a dictionary: {'memory_type': 'preference', 'memory_key': 'likes', 'memory_value': 'gardening'}
+Preference ready for application code: gardening
