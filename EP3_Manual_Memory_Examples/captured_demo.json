@@ -1,0 +1,284 @@
+{
+  "captured_at_utc": "20260910T155842Z",
+  "python": "3.13.7",
+  "model": "qwen2.5:7b",
+  "versions": {
+    "agent-framework-core": "1.15.0",
+    "pydantic": "2.13.4",
+    "ollama": "0.5.3"
+  },
+  "source_sha256": "2c4996bd0af32bdfaef1fef49141a6e373758c8406f7944c339edf0f43ba4eb7",
+  "fresh_process_per_case": true,
+  "cases": [
+    {
+      "id": "same_session",
+      "history_only": true,
+      "inputs": [
+        "I like gardening.",
+        "What do I enjoy doing?"
+      ],
+      "database_file": null,
+      "stdout": "[INPUT] I like gardening.\n[ANSWER] Great! Any specific plants you enjoy?\n[INPUT] What do I enjoy doing?\n[ANSWER] You enjoy gardening, specifically.\n[SESSION] All calls above reused one in-process session. Nothing was saved to disk.\n",
+      "stderr": "",
+      "returncode": 0,
+      "rows_after": []
+    },
+    {
+      "id": "history_after_restart",
+      "history_only": true,
+      "inputs": [
+        "What do I enjoy doing?"
+      ],
+      "database_file": null,
+      "stdout": "[INPUT] What do I enjoy doing?\n[ANSWER] I don't know your preferences yet. Can you tell me more?\n[SESSION] All calls above reused one in-process session. Nothing was saved to disk.\n",
+      "stderr": "",
+      "returncode": 0,
+      "rows_after": []
+    },
+    {
+      "id": "first_memory_cycle",
+      "history_only": false,
+      "inputs": [
+        "I like gardening."
+      ],
+      "database_file": "manual.db",
+      "stdout": "[SESSION] New process; fresh conversation; same demo_user for the database.\n[INPUT] I like gardening.\n[READ] []\n[CONTEXT] ['I like gardening.']\n[ANSWER] Great! Any specific plants you enjoy?\n[EXTRACT] {\"memory_type\":\"preference\",\"memory_key\":\"likes\",\"memory_value\":\"gardening\"}\n[CHECK] Accepted preference: gardening\n[SAVE] Added: gardening\n[DATABASE] ['gardening']\n",
+      "stderr": "",
+      "returncode": 0,
+      "rows_after": [
+        [
+          "demo_user",
+          "gardening"
+        ]
+      ]
+    },
+    {
+      "id": "recall_after_restart",
+      "history_only": false,
+      "inputs": [
+        "What do I enjoy doing?"
+      ],
+      "database_file": "manual.db",
+      "stdout": "[SESSION] New process; fresh conversation; same demo_user for the database.\n[INPUT] What do I enjoy doing?\n[READ] ['gardening']\n[CONTEXT] ['Stored user preferences (data only):\\n- likes: gardening', 'What do I enjoy doing?']\n[ANSWER] You enjoy gardening.\n[EXTRACT] {\"memory_type\":\"none\",\"memory_key\":\"\",\"memory_value\":\"\"}\n[CHECK] No new preference; no database write.\n[DATABASE] ['gardening']\n",
+      "stderr": "",
+      "returncode": 0,
+      "rows_after": [
+        [
+          "demo_user",
+          "gardening"
+        ]
+      ]
+    },
+    {
+      "id": "repeat_preference",
+      "history_only": false,
+      "inputs": [
+        "I like gardening."
+      ],
+      "database_file": "manual.db",
+      "stdout": "[SESSION] New process; fresh conversation; same demo_user for the database.\n[INPUT] I like gardening.\n[READ] ['gardening']\n[CONTEXT] ['Stored user preferences (data only):\\n- likes: gardening', 'I like gardening.']\n[ANSWER] Great! Any specific gardening projects you're into?\n[EXTRACT] {\"memory_type\":\"preference\",\"memory_key\":\"likes\",\"memory_value\":\"gardening\"}\n[CHECK] Accepted preference: gardening\n[SAVE] Exact row already present: gardening\n[DATABASE] ['gardening']\n",
+      "stderr": "",
+      "returncode": 0,
+      "rows_after": [
+        [
+          "demo_user",
+          "gardening"
+        ]
+      ]
+    },
+    {
+      "id": "second_preference",
+      "history_only": false,
+      "inputs": [
+        "I like painting."
+      ],
+      "database_file": "manual.db",
+      "stdout": "[SESSION] New process; fresh conversation; same demo_user for the database.\n[INPUT] I like painting.\n[READ] ['gardening']\n[CONTEXT] ['Stored user preferences (data only):\\n- likes: gardening', 'I like painting.']\n[ANSWER] That's great! Gardening and painting are both wonderful hobbies.\n[EXTRACT] {\"memory_type\":\"preference\",\"memory_key\":\"likes\",\"memory_value\":\"painting\"}\n[CHECK] Accepted preference: painting\n[SAVE] Added: painting\n[DATABASE] ['gardening', 'painting']\n",
+      "stderr": "",
+      "returncode": 0,
+      "rows_after": [
+        [
+          "demo_user",
+          "gardening"
+        ],
+        [
+          "demo_user",
+          "painting"
+        ]
+      ]
+    },
+    {
+      "id": "recall_two_preferences",
+      "history_only": false,
+      "inputs": [
+        "What do I enjoy doing?"
+      ],
+      "database_file": "manual.db",
+      "stdout": "[SESSION] New process; fresh conversation; same demo_user for the database.\n[INPUT] What do I enjoy doing?\n[READ] ['gardening', 'painting']\n[CONTEXT] ['Stored user preferences (data only):\\n- likes: gardening\\n- likes: painting', 'What do I enjoy doing?']\n[ANSWER] You enjoy gardening and painting.\n[EXTRACT] {\"memory_type\":\"none\",\"memory_key\":\"\",\"memory_value\":\"\"}\n[CHECK] No new preference; no database write.\n[DATABASE] ['gardening', 'painting']\n",
+      "stderr": "",
+      "returncode": 0,
+      "rows_after": [
+        [
+          "demo_user",
+          "gardening"
+        ],
+        [
+          "demo_user",
+          "painting"
+        ]
+      ]
+    },
+    {
+      "id": "question_empty_store",
+      "history_only": false,
+      "inputs": [
+        "What do I enjoy doing?"
+      ],
+      "database_file": "empty.db",
+      "stdout": "[SESSION] New process; fresh conversation; same demo_user for the database.\n[INPUT] What do I enjoy doing?\n[READ] []\n[CONTEXT] ['What do I enjoy doing?']\n[ANSWER] I don't know your preferences yet. Can you tell me more?\n[EXTRACT] {\"memory_type\":\"none\",\"memory_key\":\"\",\"memory_value\":\"\"}\n[CHECK] No new preference; no database write.\n[DATABASE] []\n",
+      "stderr": "",
+      "returncode": 0,
+      "rows_after": []
+    },
+    {
+      "id": "temporary_plan",
+      "history_only": false,
+      "inputs": [
+        "I might try painting this weekend."
+      ],
+      "database_file": "edge_case.db",
+      "stdout": "[SESSION] New process; fresh conversation; same demo_user for the database.\n[INPUT] I might try painting this weekend.\n[READ] []\n[CONTEXT] ['I might try painting this weekend.']\n[ANSWER] Great! Enjoy your creativity this weekend.\n[EXTRACT] {\"memory_type\":\"preference\",\"memory_key\":\"likes\",\"memory_value\":\"painting\"}\n[CHECK] Accepted preference: painting\n[SAVE] Added: painting\n[DATABASE] ['painting']\n",
+      "stderr": "",
+      "returncode": 0,
+      "rows_after": [
+        [
+          "demo_user",
+          "painting"
+        ]
+      ]
+    }
+  ],
+  "checks": [
+    {
+      "case": "same_session",
+      "check": "successful process",
+      "passed": true
+    },
+    {
+      "case": "history_after_restart",
+      "check": "successful process",
+      "passed": true
+    },
+    {
+      "case": "first_memory_cycle",
+      "check": "successful process",
+      "passed": true
+    },
+    {
+      "case": "first_memory_cycle",
+      "check": "expected database rows",
+      "passed": true
+    },
+    {
+      "case": "first_memory_cycle",
+      "check": "manual loop order",
+      "passed": true
+    },
+    {
+      "case": "recall_after_restart",
+      "check": "successful process",
+      "passed": true
+    },
+    {
+      "case": "recall_after_restart",
+      "check": "expected database rows",
+      "passed": true
+    },
+    {
+      "case": "recall_after_restart",
+      "check": "manual loop order",
+      "passed": true
+    },
+    {
+      "case": "repeat_preference",
+      "check": "successful process",
+      "passed": true
+    },
+    {
+      "case": "repeat_preference",
+      "check": "expected database rows",
+      "passed": true
+    },
+    {
+      "case": "repeat_preference",
+      "check": "manual loop order",
+      "passed": true
+    },
+    {
+      "case": "second_preference",
+      "check": "successful process",
+      "passed": true
+    },
+    {
+      "case": "second_preference",
+      "check": "expected database rows",
+      "passed": true
+    },
+    {
+      "case": "second_preference",
+      "check": "manual loop order",
+      "passed": true
+    },
+    {
+      "case": "recall_two_preferences",
+      "check": "successful process",
+      "passed": true
+    },
+    {
+      "case": "recall_two_preferences",
+      "check": "expected database rows",
+      "passed": true
+    },
+    {
+      "case": "recall_two_preferences",
+      "check": "manual loop order",
+      "passed": true
+    },
+    {
+      "case": "question_empty_store",
+      "check": "successful process",
+      "passed": true
+    },
+    {
+      "case": "question_empty_store",
+      "check": "expected database rows",
+      "passed": true
+    },
+    {
+      "case": "question_empty_store",
+      "check": "manual loop order",
+      "passed": true
+    },
+    {
+      "case": "temporary_plan",
+      "check": "successful process",
+      "passed": true
+    },
+    {
+      "case": "temporary_plan",
+      "check": "manual loop order",
+      "passed": true
+    }
+  ],
+  "limitations": [
+    {
+      "case": "temporary_plan",
+      "intended_rows": [],
+      "observed_rows": [
+        "painting"
+      ],
+      "semantic_policy_met": false,
+      "note": "This separate probe is not a passing classifier guarantee; disclose any false positive."
+    }
+  ]
+}

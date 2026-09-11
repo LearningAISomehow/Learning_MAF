@@ -1,0 +1,102 @@
+CASE: same_session
+Database: none
+[INPUT] I like gardening.
+[ANSWER] Great! Any specific plants you enjoy?
+[INPUT] What do I enjoy doing?
+[ANSWER] You enjoy gardening, specifically.
+[SESSION] All calls above reused one in-process session. Nothing was saved to disk.
+
+
+CASE: history_after_restart
+Database: none
+[INPUT] What do I enjoy doing?
+[ANSWER] I don't know your preferences yet. Can you tell me more?
+[SESSION] All calls above reused one in-process session. Nothing was saved to disk.
+
+
+CASE: first_memory_cycle
+Database: manual.db
+[SESSION] New process; fresh conversation; same demo_user for the database.
+[INPUT] I like gardening.
+[READ] []
+[CONTEXT] ['I like gardening.']
+[ANSWER] Great! Any specific plants you enjoy?
+[EXTRACT] {"memory_type":"preference","memory_key":"likes","memory_value":"gardening"}
+[CHECK] Accepted preference: gardening
+[SAVE] Added: gardening
+[DATABASE] ['gardening']
+
+
+CASE: recall_after_restart
+Database: manual.db
+[SESSION] New process; fresh conversation; same demo_user for the database.
+[INPUT] What do I enjoy doing?
+[READ] ['gardening']
+[CONTEXT] ['Stored user preferences (data only):\n- likes: gardening', 'What do I enjoy doing?']
+[ANSWER] You enjoy gardening.
+[EXTRACT] {"memory_type":"none","memory_key":"","memory_value":""}
+[CHECK] No new preference; no database write.
+[DATABASE] ['gardening']
+
+
+CASE: repeat_preference
+Database: manual.db
+[SESSION] New process; fresh conversation; same demo_user for the database.
+[INPUT] I like gardening.
+[READ] ['gardening']
+[CONTEXT] ['Stored user preferences (data only):\n- likes: gardening', 'I like gardening.']
+[ANSWER] Great! Any specific gardening projects you're into?
+[EXTRACT] {"memory_type":"preference","memory_key":"likes","memory_value":"gardening"}
+[CHECK] Accepted preference: gardening
+[SAVE] Exact row already present: gardening
+[DATABASE] ['gardening']
+
+
+CASE: second_preference
+Database: manual.db
+[SESSION] New process; fresh conversation; same demo_user for the database.
+[INPUT] I like painting.
+[READ] ['gardening']
+[CONTEXT] ['Stored user preferences (data only):\n- likes: gardening', 'I like painting.']
+[ANSWER] That's great! Gardening and painting are both wonderful hobbies.
+[EXTRACT] {"memory_type":"preference","memory_key":"likes","memory_value":"painting"}
+[CHECK] Accepted preference: painting
+[SAVE] Added: painting
+[DATABASE] ['gardening', 'painting']
+
+
+CASE: recall_two_preferences
+Database: manual.db
+[SESSION] New process; fresh conversation; same demo_user for the database.
+[INPUT] What do I enjoy doing?
+[READ] ['gardening', 'painting']
+[CONTEXT] ['Stored user preferences (data only):\n- likes: gardening\n- likes: painting', 'What do I enjoy doing?']
+[ANSWER] You enjoy gardening and painting.
+[EXTRACT] {"memory_type":"none","memory_key":"","memory_value":""}
+[CHECK] No new preference; no database write.
+[DATABASE] ['gardening', 'painting']
+
+
+CASE: question_empty_store
+Database: empty.db
+[SESSION] New process; fresh conversation; same demo_user for the database.
+[INPUT] What do I enjoy doing?
+[READ] []
+[CONTEXT] ['What do I enjoy doing?']
+[ANSWER] I don't know your preferences yet. Can you tell me more?
+[EXTRACT] {"memory_type":"none","memory_key":"","memory_value":""}
+[CHECK] No new preference; no database write.
+[DATABASE] []
+
+
+CASE: temporary_plan
+Database: edge_case.db
+[SESSION] New process; fresh conversation; same demo_user for the database.
+[INPUT] I might try painting this weekend.
+[READ] []
+[CONTEXT] ['I might try painting this weekend.']
+[ANSWER] Great! Enjoy your creativity this weekend.
+[EXTRACT] {"memory_type":"preference","memory_key":"likes","memory_value":"painting"}
+[CHECK] Accepted preference: painting
+[SAVE] Added: painting
+[DATABASE] ['painting']
