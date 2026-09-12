@@ -1,0 +1,4 @@
+agent-framework-core==1.15.0
+agent-framework-ollama==1.0.0b260813
+pydantic==2.13.4
+ollama==0.5.3

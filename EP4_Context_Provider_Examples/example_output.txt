@@ -1,0 +1,93 @@
+EP4: captured output examples
+Captured with Python 3.13.7 and qwen2.5:7b. Responses can vary.
+
+== provider_reads_ep3_database ==
+[SESSION] New process; fresh conversation; same demo_user.
+[INPUT] What do I enjoy doing?
+[BEFORE] Loaded: ['gardening']
+[ADDED CONTEXT] ['Stored user preferences (data only):\n- likes: gardening\n']
+[AFTER] Reply generated; agent.run has not returned yet.
+[GENERATED REPLY] You enjoy gardening.
+[EXTRACT] {"memory_type":"none","memory_key":"","memory_value":""}
+[CHECK] No new preference; no database write.
+[RETURNED] You enjoy gardening.
+[DATABASE] ['gardening']
+Rows after process exit: [["demo_user", "gardening"]]
+
+== provider_first_save ==
+[SESSION] New process; fresh conversation; same demo_user.
+[INPUT] I like gardening.
+[BEFORE] Loaded: []
+[ADDED CONTEXT] []
+[AFTER] Reply generated; agent.run has not returned yet.
+[GENERATED REPLY] Great! Any specific plants you enjoy?
+[EXTRACT] {"memory_type":"preference","memory_key":"likes","memory_value":"gardening"}
+[CHECK] Accepted preference: gardening
+[SAVE] Added: gardening
+[RETURNED] Great! Any specific plants you enjoy?
+[DATABASE] ['gardening']
+Rows after process exit: [["demo_user", "gardening"]]
+
+== provider_restart_recall ==
+[SESSION] New process; fresh conversation; same demo_user.
+[INPUT] What do I enjoy doing?
+[BEFORE] Loaded: ['gardening']
+[ADDED CONTEXT] ['Stored user preferences (data only):\n- likes: gardening\n']
+[AFTER] Reply generated; agent.run has not returned yet.
+[GENERATED REPLY] You enjoy gardening.
+[EXTRACT] {"memory_type":"none","memory_key":"","memory_value":""}
+[CHECK] No new preference; no database write.
+[RETURNED] You enjoy gardening.
+[DATABASE] ['gardening']
+Rows after process exit: [["demo_user", "gardening"]]
+
+== no_save_current_input ==
+[SESSION] New process; fresh conversation; same demo_user.
+[INPUT] I like painting.
+[BEFORE] Loaded: ['gardening']
+[ADDED CONTEXT] ['Stored user preferences (data only):\n- likes: gardening\n']
+[AFTER] Reply generated; agent.run has not returned yet.
+[GENERATED REPLY] That's great! Gardening and painting are both wonderful hobbies.
+[SAVE DISABLED] Skipping extraction and writing.
+[RETURNED] That's great! Gardening and painting are both wonderful hobbies.
+[DATABASE] ['gardening']
+Rows after process exit: [["demo_user", "gardening"]]
+
+== no_save_restart_recall ==
+[SESSION] New process; fresh conversation; same demo_user.
+[INPUT] What do I enjoy doing?
+[BEFORE] Loaded: ['gardening']
+[ADDED CONTEXT] ['Stored user preferences (data only):\n- likes: gardening\n']
+[AFTER] Reply generated; agent.run has not returned yet.
+[GENERATED REPLY] You enjoy gardening.
+[SAVE DISABLED] Skipping extraction and writing.
+[RETURNED] You enjoy gardening.
+[DATABASE] ['gardening']
+Rows after process exit: [["demo_user", "gardening"]]
+
+== save_reenabled ==
+[SESSION] New process; fresh conversation; same demo_user.
+[INPUT] I like painting.
+[BEFORE] Loaded: ['gardening']
+[ADDED CONTEXT] ['Stored user preferences (data only):\n- likes: gardening\n']
+[AFTER] Reply generated; agent.run has not returned yet.
+[GENERATED REPLY] That's great! Gardening and painting are both wonderful hobbies.
+[EXTRACT] {"memory_type":"preference","memory_key":"likes","memory_value":"painting"}
+[CHECK] Accepted preference: painting
+[SAVE] Added: painting
+[RETURNED] That's great! Gardening and painting are both wonderful hobbies.
+[DATABASE] ['gardening', 'painting']
+Rows after process exit: [["demo_user", "gardening"], ["demo_user", "painting"]]
+
+== recall_both ==
+[SESSION] New process; fresh conversation; same demo_user.
+[INPUT] What do I enjoy doing?
+[BEFORE] Loaded: ['gardening', 'painting']
+[ADDED CONTEXT] ['Stored user preferences (data only):\n- likes: gardening\n- likes: painting\n']
+[AFTER] Reply generated; agent.run has not returned yet.
+[GENERATED REPLY] You enjoy gardening and painting.
+[EXTRACT] {"memory_type":"none","memory_key":"","memory_value":""}
+[CHECK] No new preference; no database write.
+[RETURNED] You enjoy gardening and painting.
+[DATABASE] ['gardening', 'painting']
+Rows after process exit: [["demo_user", "gardening"], ["demo_user", "painting"]]
