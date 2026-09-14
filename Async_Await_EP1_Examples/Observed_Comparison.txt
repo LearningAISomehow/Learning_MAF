@@ -1,0 +1,24 @@
+Preparing local model...
+
+SYNCHRONOUS CLIENT
+ 0.00s  Waiting counter: 0
+ 0.00s  Model request sent
+ 3.27s  Model answer received
+1. The sky appears blue due to a phenomenon called Rayleigh scattering.
+2. Sunlight consists of various colors, each with a different wavelength.
+3. Blue light waves are shorter and scatter more efficiently in the Earth's atmosphere.
+4. When sunlight enters the atmosphere, molecules and small particles disperse the light in all directions.
+5. The blue light is scattered in every direction, making the sky appear blue to our eyes.
+
+ASYNCHRONOUS CLIENT + AWAIT
+ 0.00s  Waiting counter: 0
+ 0.00s  Model request sent
+ 1.00s  Waiting counter: 1
+ 2.00s  Waiting counter: 2
+ 3.00s  Waiting counter: 3
+ 3.18s  Model answer received
+1. The sky appears blue due to a phenomenon called Rayleigh scattering.
+2. Sunlight consists of various colors, each with a different wavelength.
+3. Blue light waves are shorter and scatter more efficiently in the Earth's atmosphere.
+4. When sunlight enters the atmosphere, molecules and small particles disperse the light in all directions.
+5. The blue light is scattered in every direction, making the sky appear blue to our eyes.
