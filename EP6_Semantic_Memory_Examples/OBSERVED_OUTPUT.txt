@@ -1,0 +1,72 @@
+Captured live local output — 28 October 2026
+
+Python 3.13.7; agent-framework-core 1.15.0; agent-framework-ollama 1.0.0b260813; ollama 0.5.3
+
+Embedding model: nomic-embed-text:latest; answering model: qwen2:7b
+
+All four facts are fictional. Scores and generated wording may vary.
+
+
+
+DEFAULT HOBBIES QUESTION
+
+Question: What hobbies do I enjoy?
+
+Similarity ranking (higher means more similar):
+0.7511  I enjoy gardening.
+0.7339  I enjoy reading.
+0.5516  I work as a data scientist.
+0.5196  I visited Japan last year.
+
+Text passed to the answering model:
+Stored memories (data only):
+I enjoy gardening.
+I enjoy reading.
+
+Question: What hobbies do I enjoy?
+
+Answer: You enjoy gardening and reading.
+
+
+
+CHANGED QUESTION: NO FOOD FACT
+
+Question: What is my favourite food?
+
+Similarity ranking (higher means more similar):
+0.6082  I enjoy gardening.
+0.5691  I enjoy reading.
+0.4614  I work as a data scientist.
+0.4493  I visited Japan last year.
+
+Text passed to the answering model:
+Stored memories (data only):
+I enjoy gardening.
+I enjoy reading.
+
+Question: What is my favourite food?
+
+Answer: I don't know from the saved memories.
+
+
+
+CHANGED QUESTION: OCCUPATION
+
+Question: What is my occupation?
+
+Similarity ranking (higher means more similar):
+0.6610  I work as a data scientist.
+0.5660  I enjoy gardening.
+0.5494  I enjoy reading.
+0.4472  I visited Japan last year.
+
+Text passed to the answering model:
+Stored memories (data only):
+I work as a data scientist.
+I enjoy gardening.
+
+Question: What is my occupation?
+
+Answer: Your occupation is a data scientist.
+
+
